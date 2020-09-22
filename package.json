@@ -4,7 +4,8 @@
   "description": "",
   "scripts": {
     "test": "jest --colors",
-    "build": "rm -rf dist && NODE_ENV=production npx webpack"
+    "build": "rm -rf dist && NODE_ENV=production npx webpack",
+    "heroku-postbuild": "npx webpack -p"
   },
   "repository": {
     "type": "git",
