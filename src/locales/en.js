@@ -1,6 +1,8 @@
 export default {
   translation: {
+    loading: 'Loading...',
     loadSuccess: 'Rss has been loaded',
-    errorUrl: 'Url was added before',
+    wasAddedError: 'Url was added before',
+    networkError: 'Internal Server Error',
   },
 };

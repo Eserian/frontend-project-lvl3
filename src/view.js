@@ -11,7 +11,7 @@ const postRender = ({ title, link }) => {
 };
 
 export default (state, elements) => {
-  const validHandle = () => {
+  const formValidHandle = () => {
     const { input } = elements;
     const { form: { valid } } = state;
     if (!valid) {
@@ -21,9 +21,21 @@ export default (state, elements) => {
     }
   };
 
+  const formErrorHandle = () => {
+    const { feedback } = elements;
+    const { form: { error } } = state;
+    if (error) {
+      feedback.textContent = error;
+      feedback.classList.add('text-danger');
+    } else {
+      feedback.textContent = '';
+      feedback.classList.remove('text-danger');
+    }
+  };
+
   const processStateHandle = () => {
     const { input, submit, feedback } = elements;
-    const { form: { processState, error } } = state;
+    const { processState, processError } = state;
     switch (processState) {
       case 'filling':
         submit.disabled = false;
@@ -36,12 +48,13 @@ export default (state, elements) => {
       case 'loading':
         submit.disabled = true;
         input.disabled = true;
-        feedback.classList.remove('text-danger');
         feedback.classList.add('text-success');
-        feedback.textContent = 'Loading...';
+        feedback.textContent = i18next.t('loading');
         break;
-      case 'error':
-        feedback.textContent = error;
+      case 'failed':
+        submit.disabled = false;
+        input.disabled = false;
+        feedback.textContent = processError;
         feedback.classList.add('text-danger');
         break;
       default:
@@ -68,12 +81,18 @@ export default (state, elements) => {
   const watchedState = onChange(state, (path) => {
     switch (path) {
       case 'form.valid':
-        validHandle();
+        formValidHandle();
         break;
-      case 'form.processState':
+      case 'form.error':
+        formErrorHandle();
+        break;
+      case 'processState':
         processStateHandle();
         break;
       case 'feeds':
+        feedsHandle();
+        break;
+      case 'posts':
         feedsHandle();
         break;
       default:
