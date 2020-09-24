@@ -1,4 +1,5 @@
 import onChange from 'on-change';
+import i18next from 'i18next';
 
 const postRender = ({ title, link }) => {
   const divEl = document.createElement('div');
@@ -20,29 +21,28 @@ export default (state, elements) => {
     }
   };
 
-  const errorHandle = () => {
-    const { feedback } = elements;
-    const { form: { error } } = state;
-    feedback.textContent = error;
-    feedback.classList.add('text-danger');
-  };
-
   const processStateHandle = () => {
     const { input, submit, feedback } = elements;
-    const { form: { processState } } = state;
+    const { form: { processState, error } } = state;
     switch (processState) {
       case 'filling':
         submit.disabled = false;
         input.disabled = false;
         input.value = '';
-        feedback.textContent = 'Rss has been loaded';
+        feedback.classList.remove('text-danger');
+        feedback.textContent = i18next.t('loadSuccess');
         feedback.classList.add('text-success');
         break;
       case 'loading':
         submit.disabled = true;
         input.disabled = true;
-        feedback.textContent = 'Loading...';
+        feedback.classList.remove('text-danger');
         feedback.classList.add('text-success');
+        feedback.textContent = 'Loading...';
+        break;
+      case 'error':
+        feedback.textContent = error;
+        feedback.classList.add('text-danger');
         break;
       default:
         break;
@@ -69,9 +69,6 @@ export default (state, elements) => {
     switch (path) {
       case 'form.valid':
         validHandle();
-        break;
-      case 'form.error':
-        errorHandle();
         break;
       case 'form.processState':
         processStateHandle();
