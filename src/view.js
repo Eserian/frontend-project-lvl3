@@ -78,27 +78,15 @@ export default (state, elements) => {
     });
   };
 
-  const watchedState = onChange(state, (path) => {
-    switch (path) {
-      case 'form.valid':
-        formValidHandle();
-        break;
-      case 'form.error':
-        formErrorHandle();
-        break;
-      case 'processState':
-        processStateHandle();
-        break;
-      case 'feeds':
-        feedsHandle();
-        break;
-      case 'posts':
-        feedsHandle();
-        break;
-      default:
-        break;
-    }
-  });
+  const mapping = {
+    'form.valid': formValidHandle,
+    'form.error': formErrorHandle,
+    processState: processStateHandle,
+    feeds: feedsHandle,
+    posts: feedsHandle,
+  };
+
+  const watchedState = onChange(state, (path) => mapping[path]());
 
   return watchedState;
 };
