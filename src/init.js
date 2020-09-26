@@ -8,7 +8,10 @@ import parseRss from './rssParser';
 import resources from './locales';
 
 const validate = (url, urlList) => {
-  const schema = yup.string().url().notOneOf(urlList, i18next.t('wasAddedError'));
+  const schema = yup
+    .string()
+    .url()
+    .notOneOf(urlList, i18next.t('wasAddedError'));
 
   try {
     schema.validateSync(url);

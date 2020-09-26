@@ -86,7 +86,11 @@ export default (state, elements) => {
     posts: feedsHandle,
   };
 
-  const watchedState = onChange(state, (path) => mapping[path]());
+  const watchedState = onChange(state, (path) => {
+    if (mapping[path]) {
+      mapping[path]();
+    }
+  });
 
   return watchedState;
 };
