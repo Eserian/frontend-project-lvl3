@@ -11,7 +11,7 @@ const postRender = ({ title, link }) => {
 };
 
 export default (state, elements) => {
-  const formValidHandle = () => {
+  const handleFormValid = () => {
     const { input } = elements;
     const { form: { valid } } = state;
     if (!valid) {
@@ -21,7 +21,7 @@ export default (state, elements) => {
     }
   };
 
-  const formErrorHandle = () => {
+  const handleFormError = () => {
     const { feedback } = elements;
     const { form: { error } } = state;
     if (error) {
@@ -33,10 +33,10 @@ export default (state, elements) => {
     }
   };
 
-  const processStateHandle = () => {
+  const handleStatus = () => {
     const { input, submit, feedback } = elements;
-    const { processState, processError } = state;
-    switch (processState) {
+    const { status, error } = state;
+    switch (status) {
       case 'filling':
         submit.disabled = false;
         input.disabled = false;
@@ -54,15 +54,15 @@ export default (state, elements) => {
       case 'failed':
         submit.disabled = false;
         input.disabled = false;
-        feedback.textContent = processError;
+        feedback.textContent = error;
         feedback.classList.add('text-danger');
         break;
       default:
-        break;
+        throw new Error('Unexpected state');
     }
   };
 
-  const feedsHandle = () => {
+  const handleFeeds = () => {
     const { feedsContainer } = elements;
     const { feeds, posts } = state;
     feedsContainer.innerHTML = '';
@@ -79,11 +79,11 @@ export default (state, elements) => {
   };
 
   const mapping = {
-    'form.valid': formValidHandle,
-    'form.error': formErrorHandle,
-    processState: processStateHandle,
-    feeds: feedsHandle,
-    posts: feedsHandle,
+    'form.valid': handleFormValid,
+    'form.error': handleFormError,
+    status: handleStatus,
+    feeds: handleFeeds,
+    posts: handleFeeds,
   };
 
   const watchedState = onChange(state, (path) => {
