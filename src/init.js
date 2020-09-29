@@ -58,15 +58,14 @@ const loadRssFeed = (url, watchedState) => {
 
       watchedState.posts = [...posts, ...watchedState.posts];
       watchedState.feeds = [newFeed, ...watchedState.feeds];
-      watchedState.form.valid = true;
-      watchedState.form.error = null;
-      watchedState.status = 'filling';
+      watchedState.loadProcess.error = null;
+      watchedState.loadProcess.status = 'waiting';
 
       setTimeout(() => getNewPosts(url, watchedState), 5000);
     })
     .catch(() => {
-      watchedState.processError = i18next.t('networkError');
-      watchedState.status = 'failed';
+      watchedState.loadProcess.error = i18next.t('networkError');
+      watchedState.loadProcess.status = 'failed';
     });
 };
 
@@ -75,9 +74,12 @@ export default () => {
     form: {
       valid: true,
       error: null,
+      status: 'filling',
     },
-    status: 'filling',
-    error: null,
+    loadProcess: {
+      status: 'waiting',
+      error: null,
+    },
     feeds: [],
     posts: [],
   };
@@ -107,7 +109,7 @@ export default () => {
       if (!error) {
         watchedState.form.valid = true;
         watchedState.form.error = null;
-        watchedState.status = 'loading';
+        watchedState.loadProcess.status = 'loading';
         loadRssFeed(url, watchedState);
       } else {
         watchedState.form.error = error;

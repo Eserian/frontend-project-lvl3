@@ -33,21 +33,22 @@ export default (state, elements) => {
     }
   };
 
-  const handleStatus = () => {
+  const handleLoadProcessStatus = () => {
     const { input, submit, feedback } = elements;
-    const { status, error } = state;
+    const { loadProcess: { status, error } } = state;
     switch (status) {
-      case 'filling':
+      case 'waiting':
         submit.disabled = false;
         input.disabled = false;
         input.value = '';
         feedback.classList.remove('text-danger');
-        feedback.textContent = i18next.t('loadSuccess');
         feedback.classList.add('text-success');
+        feedback.textContent = i18next.t('loadSuccess');
         break;
       case 'loading':
         submit.disabled = true;
         input.disabled = true;
+        feedback.classList.remove('text-danger');
         feedback.classList.add('text-success');
         feedback.textContent = i18next.t('loading');
         break;
@@ -81,7 +82,7 @@ export default (state, elements) => {
   const mapping = {
     'form.valid': handleFormValid,
     'form.error': handleFormError,
-    status: handleStatus,
+    'loadProcess.status': handleLoadProcessStatus,
     feeds: handleFeeds,
     posts: handleFeeds,
   };
