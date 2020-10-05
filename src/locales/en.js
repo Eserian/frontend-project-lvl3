@@ -3,6 +3,6 @@ export default {
     loading: 'Loading...',
     loadSuccess: 'Rss has been loaded',
     wasAddedError: 'Url was added before',
-    networkError: 'Internal Server Error',
+    internalServerError: 'Internal Server Error',
   },
 };

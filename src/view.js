@@ -2,12 +2,12 @@ import onChange from 'on-change';
 import i18next from 'i18next';
 
 const postRender = ({ title, link }) => {
-  const divEl = document.createElement('div');
-  const aEl = document.createElement('a');
-  aEl.href = link;
-  aEl.textContent = title;
-  divEl.append(aEl);
-  return divEl;
+  const divElement = document.createElement('div');
+  const linkElement = document.createElement('a');
+  linkElement.href = link;
+  linkElement.textContent = title;
+  divElement.append(linkElement);
+  return divElement;
 };
 
 export default (state, elements) => {
@@ -73,9 +73,9 @@ export default (state, elements) => {
         .filter((p) => p.feedId === id)
         .map(postRender);
 
-      const hEl = document.createElement('h2');
-      hEl.textContent = title;
-      feedsContainer.append(hEl, ...feedPosts);
+      const hElement = document.createElement('h2');
+      hElement.textContent = title;
+      feedsContainer.append(hElement, ...feedPosts);
     });
   };
 

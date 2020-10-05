@@ -64,7 +64,7 @@ const loadRssFeed = (url, watchedState) => {
       setTimeout(() => getNewPosts(url, watchedState), 5000);
     })
     .catch(() => {
-      watchedState.loadProcess.error = i18next.t('networkError');
+      watchedState.loadProcess.error = i18next.t('internalServerError');
       watchedState.loadProcess.status = 'failed';
     });
 };
